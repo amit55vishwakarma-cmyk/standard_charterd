@@ -27,6 +27,11 @@ module "key_vault" {
   key_vaults = var.key_vaults
 }
 
+import {
+  to = module.key_vault.azurerm_key_vault_secret.admin_password["kv1"]
+  id = "https://${var.key_vaults["kv1"].name}.vault.azure.net/secrets/${var.key_vaults["kv1"].secret_name}"
+}
+
 module "virtual_machines" {
   depends_on = [module.subnets, module.key_vault]
   source     = "../../modules/azurerm_virtual_machine"
